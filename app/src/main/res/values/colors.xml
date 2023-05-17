@@ -6,4 +6,6 @@
     <color name="purple">#6200EE</color>
     <color name="white">#FFFFFFFF</color>
     <color name="component">#ABB3BB</color>
+    <color name="grey_400">#EAE7E7</color>
+    <color name="grey_500">#D8D6D6</color>
 </resources>

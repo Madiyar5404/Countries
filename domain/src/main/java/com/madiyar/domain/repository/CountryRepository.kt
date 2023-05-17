@@ -1,8 +1,10 @@
 package com.madiyar.domain.repository
 
-import com.madiyar.domain.model.CountriesResponse
+import CountriesResponse
+
+import com.madiyar.domain.model.CountriesResponseItem
 
 interface CountryRepository {
     suspend fun getAllCountries(): CountriesResponse
-    suspend fun getCountry(cca2:String):CountriesResponse.CountriesResponseItem
+    suspend fun getCountry(cca2:String): CountriesResponse
 }

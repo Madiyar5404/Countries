@@ -1,5 +1,7 @@
 package com.madiyar.countries.presentation.adapter
 
+import CountriesResponse
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,8 @@ import com.madiyar.countries.databinding.AdapterRcCountryBinding
 import com.madiyar.countries.presentation.fragment.main.MainFragmentViewModel
 import com.madiyar.countries.presentation.ui_common.RecyclerViewItemClickCallback
 import com.madiyar.countries.presentation.ui_common.RecyclerViewScrollItemClickCallback
-import com.madiyar.domain.model.CountriesResponse
+import com.madiyar.domain.model.ArgumentCountryDetails
+import com.madiyar.domain.model.CountriesResponseItem
 
 class CountriesAdapter(
     private var mainFragmentViewModel: MainFragmentViewModel
@@ -22,17 +25,17 @@ class CountriesAdapter(
     private var countryCode = "ES"
 
     private val diffCallback =
-        object : DiffUtil.ItemCallback<CountriesResponse.CountriesResponseItem>() {
+        object : DiffUtil.ItemCallback<CountriesResponseItem>() {
             override fun areItemsTheSame(
-                oldItem: CountriesResponse.CountriesResponseItem,
-                newItem: CountriesResponse.CountriesResponseItem
+                oldItem: CountriesResponseItem,
+                newItem: CountriesResponseItem
             ): Boolean {
                 return oldItem.name.official == newItem.name.official
             }
 
             override fun areContentsTheSame(
-                oldItem: CountriesResponse.CountriesResponseItem,
-                newItem: CountriesResponse.CountriesResponseItem
+                oldItem: CountriesResponseItem,
+                newItem: CountriesResponseItem
             ): Boolean {
                 return oldItem == newItem
             }
@@ -70,32 +73,79 @@ class CountriesAdapter(
 
     inner class ViewHolder(var binding: AdapterRcCountryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun initContent(item: CountriesResponse.CountriesResponseItem) {
+        fun initContent(item: CountriesResponseItem) {
             Glide.with(itemView.context)
                 .load(item.flags.png) // Замените URL на фактический путь к изображению
                 .into(binding.tvImgCountry)
             binding.tvCountryNameOfficial.text = item.name.common
-            binding.tvCapitalNameOfficial.text = item.capital[0]
+
             binding.tvCountPopulation.text = "${item.population} mln"
+            if (item.capital != null) {
+                val capital = item.capital.get(0)
+                binding.tvCapitalNameOfficial.text = capital.toString()
+            }
+            for (currencyCode in item.currencies.javaClass.declaredFields) {
+                currencyCode.isAccessible = true
+                val currencyData = currencyCode.get(item.currencies)
+                if (currencyData != null) {
+                    val currencyNameField = currencyData.javaClass.getDeclaredField("name")
+                    currencyNameField.isAccessible = true
+                    val currencyName = currencyNameField.get(currencyData).toString()
+                    val currencySymbolField = currencyData.javaClass.getDeclaredField("symbol")
+                    currencySymbolField.isAccessible = true
+                    val currencySymbol = currencySymbolField.get(currencyData).toString()
+                    binding?.tvCurrencies?.text = "$currencyName ($currencySymbol) (${currencyData.toString().substringBeforeLast("(")})"
+                    break
+                }
+            }
+//            val currencies = item.currencies
+//            val currencyCode = currencies?.keys?.firstOrNull()
+//            val currencySymbol = currencies?.get(currencyCode)?.symbol
+//            val currencyName = currencies?.get(currencyCode)?.name
+//
+//            if (currencyCode != null && currencySymbol != null && currencyName != null) {
+//                val formattedCurrency = "$currencyName ($currencySymbol) ($currencyCode)"
+//                println(formattedCurrency)
+//            }
+//            val currencies = item.currencies
+//
+//            val currencyCode = currencies.javaClass.declaredFields.firstOrNull()?.name
+//            val currencySymbol = currencies.javaClass.declaredFields.firstOrNull()?.get(currencies)?.javaClass?.getField("symbol")?.get(currencies)
+//            val currencyName = currencies.javaClass.declaredFields.firstOrNull()?.get(currencies)?.javaClass?.getField("name")?.get(currencies)
+//
+//            if (currencyCode != null && currencySymbol != null && currencyName != null) {
+//                val formattedCurrency = "$currencyName ($currencySymbol) ($currencyCode)"
+//                binding?.tvCurrencies?.text = formattedCurrency
+//
+//            }
 
-
+//            if (currencyCode != null && currencySymbol != null && currencyName != null) {
+//                val formattedCurrency = "$currencyName ($currencySymbol) ($currencyCode)"
+//                println(formattedCurrency)
+//            }
             binding.btnShowAdditionalInfo.setOnClickListener {
                 if (accessScroll) {
                     listener?.onRecyclerViewScrollItemClick(true)
                     binding.tvFieldScroll.visibility = View.VISIBLE
                     mainFragmentViewModel.itemScrollClick(false)
-                    binding.btnShowAdditionalInfo.background = ContextCompat.getDrawable(itemView.context,
-                        R.drawable.icon_btn_up)
+                    binding.btnShowAdditionalInfo.background = ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.icon_btn_up
+                    )
                 } else {
                     listener?.onRecyclerViewScrollItemClick(false)
                     binding.tvFieldScroll.visibility = View.GONE
                     mainFragmentViewModel.itemScrollClick(true)
-                    binding.btnShowAdditionalInfo.background = ContextCompat.getDrawable(itemView.context,R.drawable.icon_btn_down)
+                    binding.btnShowAdditionalInfo.background =
+                        ContextCompat.getDrawable(itemView.context, R.drawable.icon_btn_down)
                 }
 
             }
             binding.btnLearnMore.setOnClickListener {
-                mainFragmentViewModel.itemGetCountryClick(item.cca2)
+                mainFragmentViewModel.itemGetCountryClick(ArgumentCountryDetails(item.cca2,item.name.common))
+            }
+            binding.btnAllItem.setOnClickListener {
+                mainFragmentViewModel.itemGetCountryClick(ArgumentCountryDetails(item.cca2,item.name.common))
             }
 
 

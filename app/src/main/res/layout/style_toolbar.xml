@@ -5,7 +5,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_margin="4dp"
+        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -13,6 +13,7 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="33dp"
             android:background="@drawable/back"/>
 
         <TextView
@@ -20,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="World Countries"
-            android:layout_marginStart="40dp"
             android:textSize="20dp"
             android:textColor="@color/black"
             android:textStyle="bold"

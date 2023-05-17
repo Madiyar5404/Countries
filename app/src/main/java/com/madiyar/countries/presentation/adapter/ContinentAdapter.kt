@@ -1,5 +1,6 @@
 package com.madiyar.countries.presentation.adapter
 
+import CountriesResponse
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +9,8 @@ import com.madiyar.countries.databinding.AdapterRcContinentsBinding
 import com.madiyar.countries.presentation.fragment.main.MainFragmentViewModel
 import com.madiyar.countries.presentation.ui_common.RecyclerViewItemClickCallback
 import com.madiyar.countries.presentation.ui_common.RecyclerViewScrollItemClickCallback
+import com.madiyar.domain.model.ArgumentCountryDetails
 import com.madiyar.domain.model.Continent
-import com.madiyar.domain.model.CountriesResponse
 
 class ContinentAdapter(
     private val mainFragmentViewModel: MainFragmentViewModel
@@ -56,8 +57,8 @@ class ContinentAdapter(
                 }
             })
             adapterCountries.setOnItemClickListener(object :RecyclerViewItemClickCallback{
-                override fun onRecyclerViewItemClick(cca2: String) {
-                    mainFragmentViewModel.itemGetCountryClick(cca2)
+                override fun onRecyclerViewItemClick(argumentCountryDetails: ArgumentCountryDetails) {
+                    mainFragmentViewModel.itemGetCountryClick(argumentCountryDetails)
                 }
 
             })

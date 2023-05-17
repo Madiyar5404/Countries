@@ -12,10 +12,15 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment">
+            app:destination="@id/detailsFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="false">
             <argument
                 android:name="cca2"
-                app:argType="string"/>
+                app:argType="string" />
+            <argument
+                android:name="country"
+                app:argType="string" />
         </action>
     </fragment>
     <fragment
@@ -26,5 +31,15 @@
         <argument
             android:name="cca2"
             app:argType="string" />
+        <argument
+            android:name="country"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_detailsFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="false" />
     </fragment>
 </navigation>

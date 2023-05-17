@@ -1,30 +1,45 @@
 package com.madiyar.countries.presentation.fragment.detail
 
+import CountriesResponse
 import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.madiyar.domain.model.CountriesResponse
+
+import com.madiyar.domain.model.CountriesResponseItem
 import com.madiyar.domain.usecase.GetCountry
+import dagger.Provides
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
-class DetailsViewModel @Inject constructor(private val getCountryUseCase: GetCountry) :
-    ViewModel()  {
+@HiltViewModel
+class DetailsViewModel @Inject constructor(private val providesCountryUseCase: GetCountry) :
+    ViewModel() {
 
-    private var _countryLiveData = MutableLiveData<CountriesResponse.CountriesResponseItem?>()
-    val countryLiveData: LiveData<CountriesResponse.CountriesResponseItem?>
+    private var _countryLiveData = MutableLiveData<CountriesResponse?>()
+    val countryLiveData: LiveData<CountriesResponse?>
         get() = _countryLiveData
 
+    private var _status = MutableLiveData<Boolean>()
+    val status: LiveData<Boolean>
+        get() = _status
 
-    fun getCodeCountry(cca:String) {
+    fun getCodeCountry(cca2: String) {
         viewModelScope.launch {
-            try {
-                _countryLiveData.postValue(getCountryUseCase())
-            } catch (e: Exception) {
-                Log.d("AAA", e.message.toString())
+            kotlin.runCatching {
+                providesCountryUseCase.cca2 = cca2
+                _countryLiveData.postValue(providesCountryUseCase())
+            }.onSuccess {
+                _status.postValue(true)
+            }.onFailure {
+                Log.d("AAA", it.message.toString())
+                _status.postValue(false)
             }
         }
     }
