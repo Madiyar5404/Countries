@@ -24,7 +24,7 @@ Contains all the business logic of the app. This layer has no Android components
 
 3. Data Layer:
 
-All components related to data such as database, networking, api. It is an Android specific layer.
+All components related to data such as networking, api. It is an Android specific layer.
 
 
 
