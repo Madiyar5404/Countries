@@ -3,9 +3,14 @@ ABOUT ANDROID KOTLIN COUNTRIES APP:
 A Countries App that uses feature Modularization Architecture (presentation, domain, data) modules to hit Countries API using MVVM Architecture, Coroutines, Retrofit2, Live Data, View Binding, Dagger Hilt, SOLID Principles, Clean Architecture, Dependency Injection dagger, Glide, GSON,Navigation Component and Shimmer.
 
 
+
+
 <img src="https://github.com/Madiyar5404/Countries/assets/124025514/dd5a70c4-a96b-4d4a-a7d3-1f16d8349956" width="300">
 
 MODULES:
+
+
+
 
 <img src="https://github.com/Madiyar5404/Countries/assets/124025514/599f77c9-d57b-44a6-bfcc-3a43a41f8579" width="300">
 
@@ -46,6 +51,10 @@ PRESENTATION Module:
 3.MainApllication()
 
 4.DI is divided into modules
+
+
+
+
 
 <img src="https://github.com/Madiyar5404/Countries/assets/124025514/8e2e686b-1782-40d0-8c3a-b342977d2763" width="300">
 <img src="https://github.com/Madiyar5404/Countries/assets/124025514/a52f5a19-ef3a-4c2d-9e21-f2cdebb4dfdd " width="300">
